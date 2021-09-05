@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/topjava-graduation-log/log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %class{50} - %msg%n%ex{short}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/topjava-graduation-log/error/log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %class{50}.%M:%L - %msg%n%ex{full}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) %boldYellow(%class{50}).%yellow(%M):%boldYellow(%L) - %boldCyan(%msg%n)</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ru.javawebinar.topjava" level="info">
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="ru.javawebinar.topjava.web.RestControllerExceptionHandler" level="warn">
+        <appender-ref ref="error"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
