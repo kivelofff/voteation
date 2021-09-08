@@ -10,6 +10,7 @@
     <jpa:repositories base-package="ru.javawebinar.**.repository"/>
 
     <jdbc:initialize-database data-source="dataSource" enabled="${database.populate}">
+        <jdbc:script encoding="utf-8" location="${jdbc.initLocation}"/>
         <jdbc:script encoding="utf-8" location="${database.populate.path}"/>
     </jdbc:initialize-database>
 
