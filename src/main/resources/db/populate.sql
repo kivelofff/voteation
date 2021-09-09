@@ -1,5 +1,5 @@
 DELETE
-FROM restaurants;
+FROM votes;
 DELETE
 FROM dishes;
 DELETE

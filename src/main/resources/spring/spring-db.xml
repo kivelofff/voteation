@@ -13,7 +13,7 @@
         <jdbc:script encoding="utf-8" location="${database.populate.path}"/>
     </jdbc:initialize-database>
 
-    <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
+    <context:property-placeholder location="classpath:db/h2.properties" system-properties-mode="OVERRIDE"/>
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
