@@ -13,11 +13,7 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "restaurants")
-public class Restaurant implements HasId<String> {
-    @Id
-    @Size(min = 2, max = 32)
-    @Column(name = "name", unique = true, nullable = false, length = 32)
-    private String name;
+public class Restaurant extends NamedBaseEntity {
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -4,98 +4,95 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dishes", uniqueConstraints = @UniqueConstraint(name = "menu_dish_uniq_idx", columnNames = {"menu_id", "name"}))
-public class Dish implements HasId<Integer> {
-    @Id
-    @SequenceGenerator(name = "dish_seq", sequenceName = "dish_seq", allocationSize = 1, initialValue = 100000)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dish_seq")
-    private Integer id;
-
-    @NotBlank
-    @Size(min = 2, max = 32)
-    @Column(name = "name", nullable = false, length = 32)
-    private String name;
+@Table(name = "dish")
+public class Dish extends NamedBaseEntity {
 
     @NotNull
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Float price;
 
     @NotNull
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false,
-            foreignKey = @ForeignKey(name = "menu_fkey",
-                    foreignKeyDefinition = "FOREIGN KEY (menu_id) REFERENCES menu(id) ON DELETE CASCADE"))
-    private Menu menu;
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
+    @Column(name = "day", nullable = false)
+    @NotNull
+    private LocalDate date;
 
     public Dish() {
     }
 
-    public Dish(String name, Long price) {
-        this(null, name, price);
-    }
-
-    public Dish(Integer id, String name, Long price) {
-        this.id = id;
-        this.name = name;
+    public Dish(Long id, String name, float price, Restaurant restaurant, LocalDate date) {
+        super(id, name);
         this.price = price;
+        this.restaurant = restaurant;
+        this.date = date;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(Long price) {
+    public Dish(String name, float price, Restaurant restaurant, LocalDate date) {
+        setName(name);
         this.price = price;
+        this.restaurant = restaurant;
+        this.date = date;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Long getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public Integer getId() {
-        return id;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "name=" + getName() +
+                ", price=" + getPrice() +
+                ", date=" + getDate() +
+                "} " + super.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
         Dish dish = (Dish) o;
-        return id.equals(dish.id);
+
+        return price != null ? price.equals(dish.price) : dish.price == null &&
+                (date != null ? date.equals(dish.date) : dish.date == null);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Dish{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", menu=" + (menu == null ? "null" : menu.getDate()) +
-                '}';
+        int result = super.hashCode();
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 }
