@@ -21,7 +21,7 @@ CREATE TABLE users
     name        VARCHAR(255)            NOT NULL,
     email       VARCHAR(255)            NOT NULL,
     password    VARCHAR(255)            NOT NULL,
-    CONSTRAINT user_unique_email_idx UNIQUE (email),
+    CONSTRAINT user_unique_email_idx UNIQUE (email)
 );
 
 CREATE TABLE user_roles
